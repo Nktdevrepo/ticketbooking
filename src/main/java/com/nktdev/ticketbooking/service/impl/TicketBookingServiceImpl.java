@@ -3,12 +3,16 @@ package com.nktdev.ticketbooking.service.impl;
 import com.nktdev.ticketbooking.dto.EventRequestDto;
 import com.nktdev.ticketbooking.dto.EventResponseDto;
 import com.nktdev.ticketbooking.entity.Event;
+import com.nktdev.ticketbooking.exception.ResourceNotFoundException;
 import com.nktdev.ticketbooking.repository.EventRepository;
 import com.nktdev.ticketbooking.service.ITicketBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketBookingServiceImpl implements ITicketBookingService {
@@ -26,12 +30,15 @@ public class TicketBookingServiceImpl implements ITicketBookingService {
 
     @Override
     public List<EventResponseDto> GetAllEventDetails() {
-        return List.of();
+        List<Event> EventList = eventRepository.findAll();
+        return EventList.stream().map(this::ConvertEventToDto).collect(Collectors.toList());
     }
 
     @Override
     public List<EventResponseDto> GetEventDetailById(Long Id) {
-        return List.of();
+        Event event = eventRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + Id));
+        return List.of(ConvertEventToDto(event));
+
     }
 
     private Event TransformDtoToEntity(EventRequestDto eventRequestDto) {
@@ -42,6 +49,15 @@ public class TicketBookingServiceImpl implements ITicketBookingService {
         event.setTotalCapacity(eventRequestDto.getTotalCapacity());
         event.setLocation(eventRequestDto.getLocation());
         return event;
+    }
+
+    private EventResponseDto ConvertEventToDto(Event event) {
+        EventResponseDto eventResponseDto = new EventResponseDto();
+        eventResponseDto.setTitle(event.getTitle());
+        eventResponseDto.setLocation(event.getLocation());
+        eventResponseDto.setEventDate(event.getEventDate());
+        eventResponseDto.setAvailableSeats(event.getAvailableSeats());
+        return eventResponseDto;
     }
 
 }
