@@ -20,7 +20,6 @@ public class EventController {
 
     @PostMapping("/events")
     ResponseEntity<String> CreateNewEvent(@RequestBody @Valid EventRequestDto eventRequestDto) {
-
         boolean created = iTicketBookingService.CreateEvents(eventRequestDto);
         if(created) {
             return ResponseEntity.status(HttpStatus.CREATED)

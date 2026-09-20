@@ -53,10 +53,12 @@ public class TicketBookingServiceImpl implements ITicketBookingService {
 
     private EventResponseDto ConvertEventToDto(Event event) {
         EventResponseDto eventResponseDto = new EventResponseDto();
+        eventResponseDto.setId(event.getId());
         eventResponseDto.setTitle(event.getTitle());
         eventResponseDto.setLocation(event.getLocation());
         eventResponseDto.setEventDate(event.getEventDate());
         eventResponseDto.setAvailableSeats(event.getAvailableSeats());
+        eventResponseDto.setTotalCapacity(eventResponseDto.getTotalCapacity());
         return eventResponseDto;
     }
 
