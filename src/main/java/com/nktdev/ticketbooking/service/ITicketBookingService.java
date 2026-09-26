@@ -17,6 +17,7 @@ public interface ITicketBookingService {
     List<UserResponseDto> GetUsersById(Long Id);
 
     //Ticket Booking
-    boolean BookTicket(BookingRequestDto bookingRequestDto);
+    List<BookingResponseDto> BookTicket(BookingRequestDto bookingRequestDto);
+    List<BookingResponseDto> CancelBooking(Long Id);
 
 }

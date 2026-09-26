@@ -1,5 +1,7 @@
 package com.nktdev.ticketbooking.dto;
 
+import com.nktdev.ticketbooking.entity.BookingStatus;
+
 import java.time.LocalDateTime;
 
 public class BookingResponseDto {
