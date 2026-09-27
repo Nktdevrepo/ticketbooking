@@ -109,6 +109,9 @@ public class TicketBookingServiceImpl implements ITicketBookingService {
     @Transactional
     public List<BookingResponseDto> CancelBooking(Long Id) {
         Booking booking = bookingRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Invalid Booking: " + Id + " Please Enter the Correct Booking Id for Cancel"));
+        if(booking.getStatus() == BookingStatus.CANCELLED) {
+            throw  new RuntimeException("Ticket is already Canceled With the Entered Id: " + Id);
+        }
         Event event = eventRepository.findById(booking.getEvent().getId()).orElseThrow(() -> new ResourceNotFoundException("Event is Not Found With booking Id: " + Id));
         booking.setStatus(BookingStatus.CANCELLED);
         event.setAvailableSeats((event.getAvailableSeats()+ booking.getNumberOfTickets()));
